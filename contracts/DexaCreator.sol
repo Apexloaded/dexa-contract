@@ -258,6 +258,37 @@ contract DexaCreator is DexaBase {
         return transactionCount;
     }
 
+    function getUserTransactions()
+        public
+        view
+        onlyRole(CREATOR_ROLE)
+        returns (Transaction[] memory)
+    {
+        uint256 userTxCount;
+        for (uint256 i; i < transactionCount; i++) {
+            if (
+                _transactions[i].txFrom == msg.sender ||
+                _transactions[i].txTo == msg.sender
+            ) {
+                userTxCount++;
+            }
+        }
+
+        Transaction[] memory userTx = new Transaction[](userTxCount);
+        uint256 txIndex;
+        for(uint256 i; i < transactionCount; i++) {
+            if (
+                _transactions[i].txFrom == msg.sender ||
+                _transactions[i].txTo == msg.sender
+            ) {
+                userTx[txIndex] = _transactions[i];
+                txIndex++;
+            }
+        }
+        
+        return userTx;
+    }
+
     function isNameFree(string memory username) public view returns (bool) {
         return _usernames[toLower(username)] == address(0);
     }

@@ -127,7 +127,12 @@ contract DexaMessenger is DexaBase {
         _connectionReq[msg.sender].pop();
     }
 
-    function getConnectRequests() isCreator(msg.sender) public view returns (Request[] memory) {
+    function getConnectRequests()
+        public
+        view
+        isCreator(msg.sender)
+        returns (Request[] memory)
+    {
         return _connectionReq[msg.sender];
     }
 
